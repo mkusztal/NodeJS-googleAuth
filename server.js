@@ -6,12 +6,14 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 const dotenv = require('dotenv/config');
+const { deserialize } = require('v8');
 
 const app = express();
 
 const googleClientId = process.env.CLIENT_ID_GOOGLE;
 const googleSecretClient = process.env.CLIENT_SECRET_ID_GOOGLE;
 const callbackURL = 'http://localhost:8000/auth/callback';
+const secret_auth = process.env.SECRET_COOKIES;
 
 passport.use(
   new GoogleStrategy(
@@ -25,6 +27,15 @@ passport.use(
     }
   )
 );
+// code(JS) => JSON
+passport.serializeUser((user, serialize) => {
+  serialize(null, user);
+});
+
+// JSON => code(JS)
+passport.deserializeUser((obj, deserialize) => {
+  deserialize(null, obj);
+});
 
 app.engine(
   'hbs',
@@ -36,9 +47,23 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(
+  session({ secret: secret_auth, resave: true, saveUninitialized: true })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
   res.render('index');
+});
+
+app.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+app.get('/auth/google/callback', (req, res) => {
+  res.send(`I'm back from Google!`);
 });
 
 app.get('/user/logged', (req, res) => {
