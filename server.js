@@ -5,8 +5,7 @@ const hbs = require('express-handlebars');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
-const dotenv = require('dotenv/config');
-const { deserialize } = require('v8');
+require('dotenv/config');
 
 const app = express();
 
@@ -62,7 +61,7 @@ app.get(
   passport.authenticate('google', { scope: ['email', 'profile'] })
 );
 
-app.get('/auth/google/callback', (req, res) => {
+app.get('/auth/callback', (req, res) => {
   res.send(`I'm back from Google!`);
 });
 
