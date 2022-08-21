@@ -22,7 +22,7 @@ passport.use(
       callbackURL: callbackURL,
     },
     (accessToken, refreshToken, profile, done) => {
-      done(null, profile);
+      return done(null, profile);
     }
   )
 );
@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(
-  session({ secret: secret_auth, resave: true, saveUninitialized: true })
+  session({ resave: false, saveUninitialized: true, secret: secret_auth })
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -61,9 +61,13 @@ app.get(
   passport.authenticate('google', { scope: ['email', 'profile'] })
 );
 
-app.get('/auth/callback', (req, res) => {
-  res.send(`I'm back from Google!`);
-});
+app.get(
+  '/auth/callback',
+  passport.authenticate('google', { failureRedirect: '/user/no-permission' }),
+  (req, res) => {
+    res.redirect('/user/logged');
+  }
+);
 
 app.get('/user/logged', (req, res) => {
   res.render('logged');
