@@ -4,7 +4,7 @@ require('dotenv/config');
 
 const googleClientId = process.env.CLIENT_ID_GOOGLE;
 const googleSecretClient = process.env.CLIENT_SECRET_ID_GOOGLE;
-const callbackURL = 'http://localhost:8000/auth/callback';
+const callbackURL = 'http://localhost:8000/auth/google/callback';
 
 passport.use(
   new GoogleStrategy(
