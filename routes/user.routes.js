@@ -9,7 +9,7 @@ router.get('/profile', (req, res) => {
   if (req.user) {
     res.render('profile');
   } else {
-    res.render('noPermission');
+    res.redirect('noPermission');
   }
 });
 
@@ -17,7 +17,7 @@ router.get('/profile/settings', (req, res) => {
   if (req.user) {
     res.render('settings');
   } else {
-    res.render('noPermission');
+    res.redirect('noPermission');
   }
 });
 
