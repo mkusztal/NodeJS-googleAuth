@@ -29,12 +29,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
+
 app.get('/', (req, res) => {
   res.render('index');
 });
-
-app.get('/auth', authRoutes);
-app.get('/user', userRoutes);
 
 app.use('/', (req, res) => {
   res.status(404).render('notFound');

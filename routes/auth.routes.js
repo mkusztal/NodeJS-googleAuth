@@ -15,13 +15,11 @@ router.get(
   }
 );
 
-// router.get('/auth.logout', (req, res) => {
-//   req.logout((err) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.redirect('/');
-//   });
-// });
+router.post('/logout', function (req, res, next) {
+  req.logout(function (err) {
+    if (err) return next(err);
+    res.redirect('/user/logout');
+  });
+});
 
 module.exports = router;
