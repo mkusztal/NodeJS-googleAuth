@@ -33,9 +33,4 @@ router.get('/profile/settings', (req, res) => {
   }
 });
 
-router.get('/logout', (req, res) => {
-  res.render('index');
-  console.log('Logout');
-});
-
 module.exports = router;
