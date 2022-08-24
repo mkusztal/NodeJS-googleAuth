@@ -16,14 +16,14 @@ router.get(
   }
 );
 
-router.post('/logout', (req, res, next) => {
+router.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next(err);
     }
-    res.redirect('/');
-    console.log('Logout');
   });
+  res.redirect('/');
+  console.log('Logout');
 });
 
 module.exports = router;
